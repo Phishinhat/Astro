@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="text-align:center">
+        <h1 class="title is-1">
+            Upload Picture
+        </h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 class="title is-4">
+                {{ form.as_p }}
+            </h1>
+            <br>
+            <button type="submit">
+                <h1 class="title is-2">
+                    Upload
+                </h1>
+            </button>
+            {% if img_obj %}
+                <h1>
+                    Successfully Uploaded:
+                </h1>
+                <img src="{{ img_obj.image.url }}" alt="connect" style="max-height:300px">
+            {% endif %}
+        </form>
+    </div>
+    <br>
+    <div class="column">
+        <div class="block">
+            <a href="{% url 'astro:comment' comment.id %}">
+                <button class="button is-dark is-outlined is-fullwidth">
+                    Back To Comment
+                </button>
+            </a>
+        </div>
+    </div>
+    
+{% endblock content %}

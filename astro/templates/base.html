@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Bulma CSS framework for styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Astro</title>
+</head>
+<body>
+    <a href="{% url 'astro:dashboard' %}"
+    <section class="hero is-small is-success mb-4">
+        <div class="hero-body">
+            <h1 class="title is-1">Astro</h1>
+            <p class="subtitle is-3">
+                Social network website
+            </p>
+            <p>
+                Click topbar to return to feed!!
+            </p>
+            <p>
+                Click Dweet to comment or react!!
+            </p>
+            <p>
+                Click Profile to be nosy!!!
+            </p>
+            <p>
+                Happy Scrolling!!!!!!!!!!!
+            </p>
+        </div>
+    </section>
+    </a>
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <p>Hello, {{ user.get_username }}, Welcome to Astro!!</p>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+            </div>
+
+            {% block content %}
+
+            {% endblock content %}
+
+        </div>
+    </div>
+</body>
+</html>

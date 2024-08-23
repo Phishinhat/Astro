@@ -1,0 +1,18 @@
+{% extends 'base_registration.html' %}
+
+{% block content %}
+
+    <h1>Astro</h1>
+    <h2>Registration:</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <input type="submit" value="Register">
+    </form>
+    <br>
+
+    <a href="{% url 'login' %}">Back to login</a>
+
+{% endblock %}

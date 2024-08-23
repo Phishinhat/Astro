@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column">
+        <div class="box">
+            <a href="{% url 'astro:dweet' dweet.id %}">
+                <button class="button is-dark is-outlined is-fullwidth">
+                    Back To Dweet
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="column">
+        <a href="{% url 'astro:profile' comment.user.profile.id %}">
+            <div class="block">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="{{ comment.user.profile.profileImage.url }}" alt="profile picture">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">
+                                    {{ comment.user.username }}
+                                </p>
+                                <p class="subtitle is-6">
+                                    @{{ comment.user.username|lower }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% if comment.commentImage %}
+            <div class="box">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-center">
+                                <figure class="image is-fullwidth">
+                                    <img src="{{ comment.commentImage.url }}" alt="comment picture">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="block">
+            <span class="is-small has-text-grey-light">
+                ({{ comment.created_at }})
+            </span>
+            {{ comment.body }}
+        </div>
+        {% if comment.user.id == request.user.id %}
+            <div class="block">
+                <a href="{% url 'astro:comment_image_upload' comment.id %}">
+                    <button class="button is-success is-light is-outlined is-fullwidth">
+                        Upload Photo
+                    </button>
+                </a>
+            </div>
+            <div class="block">
+                <a href="{% url 'astro:comment_edit' comment.id %}">
+                    <button class="button is-danger is-dark is-outlined is-fullwidth">
+                        Edit Comment
+                    </button>
+                </a>
+            </div>
+            <div class="column">
+                <h1 class="title is-4">
+                    Replies: {{ comment.replies.count }}
+                </h1>
+            </div>
+        {% else %}
+            <div class="column">
+                <h1 class="title is-4">
+                    Replies: {{ comment.replies.count }}
+                </h1>
+            </div>
+            <div class="block">
+                <div class="block">
+                    <h2 class="title is-2">
+                        Add a Reply
+                    </h2>
+                </div>
+                <div class="block">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="button is-success is-fullwidth is-medium mt-5" type="submit">
+                            Reply
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+        {% for reply in comment.replies.all %}
+            <div style="height:5vh">
+                <p style="background-color:lightgrey">
+                    <br>
+                </p>
+            </div>
+            <a href="{% url 'astro:profile' reply.user.profile.id %}">
+                <div class="box">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="{{ reply.user.profile.profileImage.url }}" alt="profile picture">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">
+                                        {{ reply.user.username }}
+                                    </p>
+                                    <p class="subtitle is-6">
+                                        @{{ reply.user.username|lower }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'astro:reply' reply.id %}">
+                {% if reply.replyImage %}
+                    <div class="box">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-center">
+                                        <figure class="image is-fullwidth">
+                                            <img src="{{ reply.replyImage.url }}" alt="reply picture">
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="box">
+                    <span class="is-small has-text-grey-light">
+                        ({{ reply.created_at }})
+                    </span>
+                    {{ reply.body }}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock content %}

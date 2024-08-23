@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column">
+        <div class="block" style="text-align:center">
+            <h1 class="title is-2">
+                Edit Dweet
+            </h1>
+        </div>
+        {% if dweet.dweetImage %}
+            <div class="block" style="text-align:center">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-center">
+                                <figure class="image is-fullwidth">
+                                    <img src="{{ dweet.dweetImage.url }}" alt="dweet picture">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="block">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="button is-success is-fullwidth is-medium mt-5" type="submit">
+                    Edit Dweet
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="column">
+        <div class="block">
+            <a href="{% url 'astro:dweet' dweet.id %}">
+                <button class="button is-dark is-outlined is-fullwidth">
+                    Back To Dweet
+                </button>
+            </a>
+        </div>
+    </div>
+    
+{% endblock content %}

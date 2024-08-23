@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Bulma CSS framework for styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Astro</title>
+</head>
+<body>
+    <section class="hero is-small is-success mb-4">
+        <div class="hero-body">
+            <h1 class="title is-1">Astro</h1>
+            <p class="subtitle is-4">
+                Social network website
+            </p>
+        </div>
+    </section>
+    <h1>Welcome to Astro!!</h1>
+    <h2>Please login below:</h2>
+    <a href="{% url 'login' %}">
+        Login
+    </a>
+    <h2>Don't have an account?</h2>
+    <h2>Create one below:</h2>
+    <a href="{% url 'astro:register' %}">
+        Register
+    </a>
+</body>
+</html>

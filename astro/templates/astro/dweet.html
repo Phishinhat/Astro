@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column">
+        <a href="{% url 'astro:profile' dweet.user.profile.id %}">
+            <div class="block">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img  src="{{ dweet.user.profile.profileImage.url }}" alt="profile picture">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">
+                                    {{ dweet.user.username }}
+                                </p>
+                                <p class="subtitle is-6">
+                                    @{{ dweet.user.username|lower }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% if dweet.dweetImage %}
+            <div class="box">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-center">
+                                <figure class="image is-fullwidth">
+                                    <img src="{{ dweet.dweetImage.url }}" alt="dweet picture">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="block">
+            <span class="is-small has-text-grey-light">
+                ({{ dweet.created_at }})
+            </span>
+            {{ dweet.body }}
+        </div>
+        {% if dweet.user.id == request.user.id %}
+            <div class="block">
+                <a href="{% url 'astro:dweet_image_upload' dweet.id %}">
+                    <button class="button is-success is-light is-outlined is-fullwidth">
+                        Upload Photo
+                    </button>
+                </a>
+            </div>
+            <div class="block">
+                <a href="{% url 'astro:dweet_edit' dweet.id %}">
+                    <button class="button is-danger is-dark is-outlined is-fullwidth">
+                        Edit Dweet
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+        <div class="column">
+            <h1 class="title is-4">
+                Comments: {{ dweet.comments.count }}
+            </h1>
+            <div class="block">
+                <div class="block">
+                    <h2 class="title is-2">
+                        Add a Comment
+                    </h2>
+                </div>
+                <div class="block">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="button is-success is-fullwidth is-medium mt-5" type="submit">
+                            Comment
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% for comment in dweet.comments.all %}
+                <div style="height:5vh">
+                    <p style="background-color:lightgrey">
+                        <br>
+                    </p>
+                </div>
+                <a href="{% url 'astro:profile' comment.user.profile.id %}">
+                    <div class="box">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img  src="{{ comment.user.profile.profileImage.url }}" alt="profile picture">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">
+                                            {{ comment.user.username }}
+                                        </p>
+                                        <p class="subtitle is-6">
+                                            @{{ comment.user.username|lower }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="{% url 'astro:comment' comment.id %}">
+                    {% if comment.commentImage %}
+                        <div class="box">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-center">
+                                            <figure class="image is-fullwidth">
+                                                <img src="{{ comment.commentImage.url }}" alt="comment picture">
+                                            </figure>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="box">
+                        <span class="is-small has-text-grey-light">
+                            ({{ comment.created_at }})
+                        </span>
+                        {{ comment.body }}
+                    </div>
+                    <div class="box">
+                        Replies: {{ comment.replies.count }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
